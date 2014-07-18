@@ -76,7 +76,7 @@ class Juego {
      * el tiempo que pasó desde la última llamada y si no pasó un mínimo
      * de milisegundos no se actualiza ni dibuja nada
      *********************************************************************/
-    void _loop(num delta) {
+    void _loop(delta) {
         var tmp = new DateTime.now();
         
         if((tmp.millisecondsSinceEpoch - _tiempo) > 170) {
@@ -157,7 +157,7 @@ class Serpiente {
      * Cada cuadro es de 20x20, pero los pinto de 19x19 para
      * dejar un px de separación, queda mejor, creo XD
      **************************************************************/
-    void dibujar(CanvasRenderingContext2D ctx) {
+    void dibujar(ctx) {
         // cascade en acción :)
         ctx..fillStyle = "red"
            ..fillRect(_cuadros[0].px, _cuadros[0].py, 19, 19)
@@ -175,7 +175,7 @@ class Serpiente {
      * 
      * Retorna TRUE si hubo alguna colisión
      *******************************************************************/
-    bool mover(List<Fruta> frutas) {
+    bool mover(frutas) {
         var nx = _cuadros[0]._x;
         var ny = _cuadros[0]._y;
         
@@ -230,7 +230,7 @@ class Serpiente {
      * ARRIBA no puede cambiar hacia ABAJO y viceversa, igual con
      * IZQUIERDA y DERECHA
      ***************************************************************/
-    void cambiarDireccion(num nuevaDir) {
+    void cambiarDireccion(nuevaDir) {
         switch(nuevaDir) {
             case ARRIBA:
             case ABAJO:
@@ -278,7 +278,7 @@ class Fruta extends Cuadro {
     num _tipo;
     var _random;
     
-    Fruta(var random): super(random.nextInt(32), random.nextInt(24)) {
+    Fruta(random): super(random.nextInt(32), random.nextInt(24)) {
         _random = random;
         _tipo = random.nextInt(3); // 3 tipos de frutas
     }
