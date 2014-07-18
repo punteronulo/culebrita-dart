@@ -1,4 +1,5 @@
 culebrita-dart
 ==============
 
-Sencilla versión realizada en el lenguaje Dart del juego Snake
+Versión muy sencilla del juego Snake
+Realizada con el lenguaje de programación Dart.
