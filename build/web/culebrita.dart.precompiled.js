@@ -3024,7 +3024,7 @@ var $$ = {};
     Juego$1: function(_ctx) {
       var t1 = H.setRuntimeTypeInfo(new W._EventStream(window, C.EventStreamProvider_keydown._eventType, false), [null]);
       H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new Z.Juego_closure(this)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
-      t1 = new Z.Serpiente(null, null, null);
+      t1 = new Z.Serpiente(null, null, null, null);
       t1.Serpiente$0();
       this._serpiente = t1;
       t1 = this._frutas;
@@ -3032,7 +3032,7 @@ var $$ = {};
       t1[1] = Z.Fruta$(this._random);
     },
     static: {Juego$: function(_ctx) {
-        var t1 = new Z.Juego(_ctx, true, null, null, Array(2), ["cyan", "blue", "magenta", "brown"], C.C__JSRandom);
+        var t1 = new Z.Juego(_ctx, true, null, null, Array(2), ["cyan", "blue", "magenta"], C.C__JSRandom);
         t1.Juego$1(_ctx);
         return t1;
       }}
@@ -3058,7 +3058,7 @@ var $$ = {};
       t2 = t1._ctx;
       t1 = t1._colores;
       t3 = fruta.get$tipo();
-      if (t3 < 0 || t3 >= 4)
+      if (t3 < 0 || t3 >= 3)
         return H.ioore(t1, t3);
       t2.fillStyle = t1[t3];
       t2.fillRect(fruta._x * 20, fruta._y * 20, 19, 19);
@@ -3066,29 +3066,49 @@ var $$ = {};
     }
   },
   Serpiente: {
-    "^": "Object;_direccion,_crecer,_cuadros",
+    "^": "Object;_direccion,_crecer,_choque,_cuadros",
     dibujar$1: function(ctx) {
-      var t1, i;
+      var t1, t2, i, t3;
       ctx.fillStyle = "red";
       t1 = this._cuadros;
       if (0 >= t1.length)
         return H.ioore(t1, 0);
-      t1 = t1[0];
-      ctx.fillRect(t1._x * 20, t1._y * 20, 19, 19);
+      t1 = t1[0].get$px();
+      t2 = this._cuadros;
+      if (0 >= t2.length)
+        return H.ioore(t2, 0);
+      ctx.fillRect(t1, t2[0].get$py(), 19, 19);
       ctx.fillStyle = "green";
-      for (i = 1; t1 = this._cuadros, i < t1.length; ++i) {
-        t1 = t1[i];
-        ctx.fillRect(t1._x * 20, t1._y * 20, 19, 19);
+      for (i = 1; t1 = this._cuadros, t2 = t1.length, i < t2; ++i) {
+        t1 = t1[i].get$px();
+        t2 = this._cuadros;
+        if (i >= t2.length)
+          return H.ioore(t2, i);
+        ctx.fillRect(t1, t2[i].get$py(), 19, 19);
+      }
+      t3 = this._choque;
+      if (t3 !== -1) {
+        ctx.fillStyle = "brown";
+        if (t3 < 0 || t3 >= t2)
+          return H.ioore(t1, t3);
+        t1 = t1[t3].get$px();
+        t2 = this._cuadros;
+        t3 = this._choque;
+        if (t3 < 0 || t3 >= t2.length)
+          return H.ioore(t2, t3);
+        ctx.fillRect(t1, t2[t3].get$py(), 19, 19);
       }
     },
     mover$1: function(frutas) {
-      var t1, nx, ny, fruta, colision, t2, i, t3;
+      var t1, nx, ny, fruta, colision, i;
       t1 = this._cuadros;
       if (0 >= t1.length)
         return H.ioore(t1, 0);
-      t1 = t1[0];
-      nx = t1._x;
-      ny = t1._y;
+      nx = t1[0].get$_x();
+      t1 = this._cuadros;
+      if (0 >= t1.length)
+        return H.ioore(t1, 0);
+      ny = t1[0].get$_y();
       switch (this._direccion) {
         case 0:
           ++nx;
@@ -3115,13 +3135,23 @@ var $$ = {};
       colision = (nx < 0 || nx >= 32) && true;
       if (ny < 0 || ny >= 24)
         colision = true;
-      for (t1 = this._cuadros, t2 = t1.length, i = 3; i < t2; ++i) {
-        t3 = t1[i];
-        if (t3._x === nx && t3._y === ny)
+      for (i = 3; t1 = this._cuadros, i < t1.length; ++i) {
+        if (t1[i].get$_x() === nx) {
+          t1 = this._cuadros;
+          if (i >= t1.length)
+            return H.ioore(t1, i);
+          t1 = t1[i].get$_y() === ny;
+        } else
+          t1 = false;
+        if (t1) {
+          this._choque = i;
           colision = true;
+          break;
+        }
       }
       if (!colision) {
-        C.JSArray_methods.insert$2(t1, 0, new Z.Cuadro(nx, ny));
+        document.querySelector("#cuadros").textContent = "Longitud " + C.JSInt_methods.toString$0(this._cuadros.length);
+        C.JSArray_methods.insert$2(this._cuadros, 0, new Z.Cuadro(nx, ny));
         t1 = this._crecer;
         if (t1 === 0) {
           t1 = this._cuadros;
@@ -3156,11 +3186,18 @@ var $$ = {};
       C.JSArray_methods.insert$2(t1, 0, new Z.Cuadro(8, 14));
       this._direccion = 0;
       this._crecer = 0;
+      this._choque = -1;
     },
     static: {"^": "Serpiente_DERECHA,Serpiente_IZQUIERDA,Serpiente_ARRIBA,Serpiente_ABAJO"}
   },
   Cuadro: {
-    "^": "Object;_x<,_y"
+    "^": "Object;_x<,_y<",
+    get$px: function() {
+      return this._x * 20;
+    },
+    get$py: function() {
+      return this._y * 20;
+    }
   },
   Fruta: {
     "^": "Cuadro;_tipo,_random,_x,_y",
@@ -10297,9 +10334,10 @@ function dart_precompiled($collectedClasses) {
   if ($desc instanceof Array)
     $desc = $desc[1];
   Juego__dibujar_closure.prototype = $desc;
-  function Serpiente(_direccion, _crecer, _cuadros) {
+  function Serpiente(_direccion, _crecer, _choque, _cuadros) {
     this._direccion = _direccion;
     this._crecer = _crecer;
+    this._choque = _choque;
     this._cuadros = _cuadros;
   }
   Serpiente.builtin$cls = "Serpiente";
@@ -10322,6 +10360,9 @@ function dart_precompiled($collectedClasses) {
   Cuadro.prototype = $desc;
   Cuadro.prototype.get$_x = function() {
     return this._x;
+  };
+  Cuadro.prototype.get$_y = function() {
+    return this._y;
   };
   function Fruta(_tipo, _random, _x, _y) {
     this._tipo = _tipo;

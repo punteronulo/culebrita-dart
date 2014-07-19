@@ -21,9 +21,8 @@ class Juego {
     // dos frutas
     List<Fruta> _frutas = new List(2);
     
-    // colores de las frutas, el último
-    // para colorear la casilla cando choca consigo misma
-    var _colores = ["cyan", "blue", "magenta", "brown"];
+    // colores de las frutas
+    var _colores = ["cyan", "blue", "magenta"];
     
     // números aleatorios
     var _random = new Random();
@@ -141,6 +140,10 @@ class Serpiente {
     
     num _direccion, _crecer;
     
+    // indice del bloque de ella misma con el que chocó
+    // la cabeza, o -1 si no hay choque
+    num _choque;
+    
     List<Cuadro> _cuadros;
     
     Serpiente() {
@@ -153,6 +156,7 @@ class Serpiente {
 
         _direccion = DERECHA;
         _crecer = 0;
+        _choque = -1;
     }
     
     /* dibujar
@@ -171,6 +175,11 @@ class Serpiente {
         
         for(var i = 1; i < _cuadros.length; i++)
             ctx.fillRect(_cuadros[i].px, _cuadros[i].py, 19, 19);
+        
+        // si choca con sigo misma, ese bloque se marca de otro color
+        if(_choque != -1)
+            ctx..fillStyle = "brown"
+               ..fillRect(_cuadros[_choque].px, _cuadros[_choque].py, 19, 19);
     }
     
     /* mover
@@ -217,11 +226,15 @@ class Serpiente {
         // colisión con sigo misma, se mira a partir de la coordenada 3, ya que
         // es imposible que la cabeza choque con la 1 y la 2
         for(var i = 3; i < _cuadros.length; i++) {
-            if(_cuadros[i]._x == nx && _cuadros[i]._y == ny)
+            if(_cuadros[i]._x == nx && _cuadros[i]._y == ny) {
                 colision = true;
+                _choque = i;
+                break;
+            }
         }
 
         if(!colision) {
+            querySelector("#cuadros").text = "Longitud " + _cuadros.length.toString();
             _cuadros.insert(0, new Cuadro(nx, ny));
             if(_crecer == 0) _cuadros.removeLast();
             else _crecer--;
