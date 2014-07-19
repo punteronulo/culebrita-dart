@@ -24,7 +24,7 @@ class Juego {
     // colores de las frutas
     var _colores = ["cyan", "blue", "magenta"];
     
-    // número aleatorios
+    // números aleatorios
     var _random = new Random();
     
     /* constructor

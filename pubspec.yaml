@@ -1,0 +1,4 @@
+name: culebrita
+description: A sample web application
+dependencies:
+  browser: any
