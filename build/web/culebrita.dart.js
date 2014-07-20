@@ -2992,12 +2992,40 @@ var $$ = {};
     var canvas, juego, t1;
     canvas = document.querySelector("#canvas");
     canvas.focus();
-    juego = Z.Juego$(J.get$context2D$x(canvas));
+    juego = Y.Juego$(J.get$context2D$x(canvas));
     t1 = Date.now();
     new P.DateTime(t1, false).DateTime$_now$0();
     juego._tiempo = t1;
     C.Window_methods.get$animationFrame(window).then$1(juego.get$_loop());
-  }, "call$0", "main$closure", 0, 0, 0],
+  }, "call$0", "main$closure", 0, 0, 0]
+},
+1],
+["culebrita_juego", "juego.dart", , Y, {
+  "^": "",
+  Cuadro: {
+    "^": "Object;_x<,_y<",
+    get$px: function() {
+      return this._x * 20;
+    },
+    get$py: function() {
+      return this._y * 20;
+    }
+  },
+  Fruta: {
+    "^": "Cuadro;_tipo,_random,_x,_y",
+    get$tipo: function() {
+      return this._tipo;
+    },
+    Fruta$1: function(random) {
+      this._random = random;
+      this._tipo = random.nextInt$1(3);
+    },
+    static: {Fruta$: function(random) {
+        var t1 = new Y.Fruta(null, null, random.nextInt$1(32), random.nextInt$1(24));
+        t1.Fruta$1(random);
+        return t1;
+      }}
+  },
   Juego: {
     "^": "Object;_ctx,jugando,_tiempo,_serpiente,_frutas,_colores,_random",
     _loop$1: [function(delta) {
@@ -3018,21 +3046,21 @@ var $$ = {};
     _dibujar$0: function() {
       var t1 = this._ctx;
       t1.clearRect(0, 0, 640, 480);
-      H.IterableMixinWorkaround_forEach(this._frutas, new Z.Juego__dibujar_closure(this));
+      H.IterableMixinWorkaround_forEach(this._frutas, new Y.Juego__dibujar_closure(this));
       this._serpiente.dibujar$1(t1);
     },
     Juego$1: function(_ctx) {
       var t1 = H.setRuntimeTypeInfo(new W._EventStream(window, C.EventStreamProvider_keydown._eventType, false), [null]);
-      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new Z.Juego_closure(this)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
-      t1 = new Z.Serpiente(null, null, null, null);
+      H.setRuntimeTypeInfo(new W._EventStreamSubscription(0, t1._html$_target, t1._eventType, W._wrapZone(new Y.Juego_closure(this)), t1._useCapture), [H.getTypeArgumentByIndex(t1, 0)])._tryResume$0();
+      t1 = new Y.Serpiente(null, null, null, null);
       t1.Serpiente$0();
       this._serpiente = t1;
       t1 = this._frutas;
-      t1[0] = Z.Fruta$(this._random);
-      t1[1] = Z.Fruta$(this._random);
+      t1[0] = Y.Fruta$(this._random);
+      t1[1] = Y.Fruta$(this._random);
     },
     static: {Juego$: function(_ctx) {
-        var t1 = new Z.Juego(_ctx, true, null, null, Array(2), ["cyan", "blue", "magenta"], C.C__JSRandom);
+        var t1 = new Y.Juego(_ctx, true, null, null, Array(2), ["cyan", "blue", "magenta"], C.C__JSRandom);
         t1.Juego$1(_ctx);
         return t1;
       }}
@@ -3151,7 +3179,7 @@ var $$ = {};
       }
       if (!colision) {
         document.querySelector("#cuadros").textContent = "Longitud " + C.JSInt_methods.toString$0(this._cuadros.length);
-        C.JSArray_methods.insert$2(this._cuadros, 0, new Z.Cuadro(nx, ny));
+        C.JSArray_methods.insert$2(this._cuadros, 0, new Y.Cuadro(nx, ny));
         t1 = this._crecer;
         if (t1 === 0) {
           t1 = this._cuadros;
@@ -3181,41 +3209,16 @@ var $$ = {};
     Serpiente$0: function() {
       var t1 = [];
       this._cuadros = t1;
-      t1.push(new Z.Cuadro(6, 14));
-      C.JSArray_methods.insert$2(t1, 0, new Z.Cuadro(7, 14));
-      C.JSArray_methods.insert$2(t1, 0, new Z.Cuadro(8, 14));
+      t1.push(new Y.Cuadro(6, 14));
+      C.JSArray_methods.insert$2(t1, 0, new Y.Cuadro(7, 14));
+      C.JSArray_methods.insert$2(t1, 0, new Y.Cuadro(8, 14));
       this._direccion = 0;
       this._crecer = 0;
       this._choque = -1;
     },
     static: {"^": "Serpiente_DERECHA,Serpiente_IZQUIERDA,Serpiente_ARRIBA,Serpiente_ABAJO"}
-  },
-  Cuadro: {
-    "^": "Object;_x<,_y<",
-    get$px: function() {
-      return this._x * 20;
-    },
-    get$py: function() {
-      return this._y * 20;
-    }
-  },
-  Fruta: {
-    "^": "Cuadro;_tipo,_random,_x,_y",
-    get$tipo: function() {
-      return this._tipo;
-    },
-    Fruta$1: function(random) {
-      this._random = random;
-      this._tipo = random.nextInt$1(3);
-    },
-    static: {Fruta$: function(random) {
-        var t1 = new Z.Fruta(null, null, random.nextInt$1(32), random.nextInt$1(24));
-        t1.Fruta$1(random);
-        return t1;
-      }}
   }
-},
-1],
+}],
 ["dart._internal", "dart:_internal", , H, {
   "^": "",
   IterableMixinWorkaround_forEach: function(iterable, f) {
